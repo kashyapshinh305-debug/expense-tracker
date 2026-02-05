@@ -24,7 +24,9 @@ function uid(){ return Date.now().toString(36) + Math.random().toString(36).slic
 
 function loadTx(){
   try{
-    const data = JSON.parse(localStorage.getItem(LS_KEY) || '[]')
+    const data = JSON.parse(localStorage.getItem("expenses_v1"))
+    console.log(data);
+    
     return Array.isArray(data) ? data : []
   }catch(e){
     console.error(e)
@@ -55,7 +57,7 @@ function render(){
   txList.innerHTML = ''
   let total = 0, income = 0, expense = 0
 
-  filtered.sort((a,b)=> b.date.localeCompare(a.date)).forEach(tx=>{
+  filtered.sort((a,b)=> a.date.localeCompare(b.date)).forEach(tx=>{
     const li = document.createElement('li')
     const left = document.createElement('div'); left.className='tx-left'
     const meta = document.createElement('div')
@@ -91,6 +93,8 @@ function render(){
   incomeEl.textContent = `₹${income.toFixed(2)}`
   expensesEl.textContent = `₹${Math.abs(expense).toFixed(2)}`
 }
+
+render()
 
 function addTx(tx){
   const list = loadTx()
@@ -154,17 +158,17 @@ txForm.addEventListener('submit', e=>{
     resetForm()
   } else {
     addTx({ id: uid(), description: desc, amount, category, date })
-    txForm.reset()
+    resetForm()
   }
 })
 
 clearBtn.addEventListener('click', ()=> txForm.reset())
 
-searchEl.addEventListener('input', render)
-filterCategory.addEventListener('change', render)
-filterMonth.addEventListener('change', render)
+if(searchEl) searchEl.addEventListener('input', render)
+if(filterCategory) filterCategory.addEventListener('change', render)
+if(filterMonth) filterMonth.addEventListener('change', render)
 
-exportCsvBtn.addEventListener('click', ()=>{
+if(exportCsvBtn) exportCsvBtn.addEventListener('click', ()=>{
   const list = loadTx()
   if(list.length === 0){ alert('No data'); return }
   const header = ['id','description','amount','category','date']
@@ -177,10 +181,12 @@ exportCsvBtn.addEventListener('click', ()=>{
   URL.revokeObjectURL(url)
 })
 
-resetAllBtn.addEventListener('click', ()=>{
+if(resetAllBtn) resetAllBtn.addEventListener('click', ()=>{
   if(confirm('Remove all transactions?')) {
     localStorage.removeItem(LS_KEY)
+    resetForm()
     render()
+    resetAllBtn.focus()
   }
 })
 
@@ -190,3 +196,4 @@ resetAllBtn.addEventListener('click', ()=>{
   dateEl.value = new Date().toISOString().slice(0,10)
   render()
 })()
+

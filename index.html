@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Expense Tracker</h1>
+      <p class="subtitle">Track income & expenses — localStorage backed</p>
+    </header>
+
+    <section class="card add-card">
+      <h2>Add / Edit Transaction</h2>
+      <form id="txForm">
+        <div class="row">
+          <input id="description" placeholder="Description" required />
+          <input id="amount" placeholder="Amount (positive for income, negative for expense)" required />
+        </div>
+        <div class="row">
+          <select id="category">
+            <option value="General">General</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Salary">Salary</option>
+          </select>
+          <input id="date" type="date" required />
+        </div>
+        <div class="row">
+          <button type="submit" id="saveBtn">Save</button>
+          <button type="button" id="clearBtn">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card summary-card">
+      <div>
+        <h3>Balance</h3>
+        <p id="balance">₹0.00</p>
+      </div>
+      <div>
+        <h3>Income</h3>
+        <p id="income">₹0.00</p>
+      </div>
+      <div>
+        <h3>Expenses</h3>
+        <p id="expenses">₹0.00</p>
+      </div>
+    </section>
+
+    <section class="card control-card">
+      <div class="row">
+        <input id="search" placeholder="Search description..." />
+        <select id="filterCategory">
+          <option value="All">All Categories</option>
+          <option value="General">General</option>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Bills">Bills</option>
+          <option value="Salary">Salary</option>
+        </select>
+        <input id="filterMonth" type="month" />
+      </div>
+      <div class="row">
+        <button id="exportCsv">Export CSV</button>
+        <button id="resetAll">Reset All</button>
+      </div>
+    </section>
+
+    <section class="card list-card">
+      <h2>Transactions</h2>
+      <ul id="txList"></ul>
+    </section>
+
+    <footer>
+      <small>Built for demo — data stored locally in browser.</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
